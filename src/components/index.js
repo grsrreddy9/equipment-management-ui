@@ -1,3 +1,4 @@
-import EquipmentFormContainer from './equipments';
+import CreateEquipmentForm from './forms/create-equipment';
+import CreateDepartmentForm from './forms/create-department';
 
-export {EquipmentFormContainer};
+export {CreateEquipmentForm, CreateDepartmentForm};

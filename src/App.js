@@ -1,11 +1,9 @@
 import './App.css';
-import {NewItemCreation} from './pages';
+import {CreateEquipmentPage, CreateDepartmentPage} from './pages';
 function App() {
   return (
     <div className="App">
-      <div>
-        <NewItemCreation />
-      </div>
+      <CreateDepartmentPage />
     </div>
   );
 }

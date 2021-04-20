@@ -1,2 +1,3 @@
-import NewItemCreation from './new-item-creation';
-export {NewItemCreation};
+import CreateEquipmentPage from './create-equipment';
+import CreateDepartmentPage from './create-department';
+export {CreateEquipmentPage, CreateDepartmentPage};
