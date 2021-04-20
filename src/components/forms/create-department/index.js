@@ -44,9 +44,9 @@ function DepartmentForm({onSubmit}) {
 function DepartmentFormContainer() {
   const onFormSubmit = (values) => {
     axios
-      .post('localhost:8080/create-department')
-      .then((resp) => {})
-      .catch((err) => {});
+      .post('http://127.0.0.1:8000/main/department',values)
+      .then((resp) => {alert( ` Created Successfully!, ${resp}`)})
+      .catch((err) => {alert( `  UnSuccessfull!, ${err}`)});
   };
   return (
     <Grid

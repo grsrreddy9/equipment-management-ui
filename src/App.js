@@ -3,7 +3,8 @@ import {CreateEquipmentPage, CreateDepartmentPage} from './pages';
 function App() {
   return (
     <div className="App">
-      <CreateDepartmentPage />
+      
+      <CreateEquipmentPage />
     </div>
   );
 }
