@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Formik, Field, Form, useFormik} from 'formik';
+import axios from 'axios';
 import {
   Paper,
   Grid,
@@ -9,72 +9,60 @@ import {
   MenuItem,
   FormControl,
 } from '@material-ui/core';
-import './create-equipment-form.css';
+import {Formik, Field, Form, useFormik} from 'props';
 
 function EquipmentForm({onSubmit}) {
-  const formik = useFormik({
-    initialValues: {
-      id: '',
-      name: '',
-      model: '',
-      capacity: '',
-      department: '',
-      manufacturer: '',
-    },
-    validationSchema: {},
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
+    <Formik initialValues={{equipment_id: '', equipment_name:'', equipment_capacity:'', equipment_model:'', department:'', manufacturer:''}} onSubmit={onSubmit}>
+      {(props) => (
+        <form onSubmit={props.handleSubmit}>
+          <Grid container spacing={3}>
+          <Grid item xs={12}>
           <TextField
-            id="id"
-            name="id"
+            id="equipment_id"
+            name="equipment_id"
             className="form-field"
             label="Equipment ID"
-            value={formik.values.id}
-            onChange={formik.handleChange}
-            error={formik.touched.id && Boolean(formik.errors.id)}
-            helperText={formik.touched.id && formik.errors.id}
+            value={props.values.equipment_id}
+            onChange={props.handleChange}
+            error={props.touched.equipment_id && Boolean(props.errors.equipment_id)}
+            helperText={props.touched.equipment_id && props.errors.equipment_id}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="name"
-            name="name"
+            id="equipment_name"
+            name="equipment_name"
             className="form-field"
             label="Equipment Name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
+            value={props.values.equipment_name}
+            onChange={props.handleChange}
+            error={props.touched.equipment_name && Boolean(props.errors.equipment_name)}
+            helperText={props.touched.equipment_name && props.errors.equipment_name}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="model"
-            name="model"
+            id="equipment_model"
+            name="equipment_model"
             className="form-field"
             label="Equipment Model"
-            value={formik.values.model}
-            onChange={formik.handleChange}
-            error={formik.touched.model && Boolean(formik.errors.model)}
-            helperText={formik.touched.model && formik.errors.model}
+            value={props.values.equipment_model}
+            onChange={props.handleChange}
+            error={props.touched.equipment_model && Boolean(props.errors.equipment_model)}
+            helperText={props.touched.equipment_model && props.errors.equipment_model}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            id="capacity"
-            name="capacity"
+            id="equipment_capacity"
+            name="equipment_capacity"
             className="form-field"
             label="Equipment Capacity"
-            value={formik.values.capacity}
-            onChange={formik.handleChange}
-            error={formik.touched.capacity && Boolean(formik.errors.capacity)}
-            helperText={formik.touched.capacity && formik.errors.capacity}
+            value={props.values.equipment_capacity}
+            onChange={props.handleChange}
+            error={props.touched.equipment_capacity && Boolean(props.errors.equipment_capacity)}
+            helperText={props.touched.equipment_capacity && props.errors.equipment_capacity}
           />
         </Grid>
         <Grid item xs={12}>
@@ -83,13 +71,13 @@ function EquipmentForm({onSubmit}) {
             name="manufacturer"
             className="form-field"
             label="Manufacturer"
-            value={formik.values.manufacturer}
-            onChange={formik.handleChange}
+            value={props.values.manufacturer}
+            onChange={props.handleChange}
             error={
-              formik.touched.manufacturer && Boolean(formik.errors.manufacturer)
+              props.touched.manufacturer && Boolean(props.errors.manufacturer)
             }
             helperText={
-              formik.touched.manufacturer && formik.errors.manufacturer
+              props.touched.manufacturer && props.errors.manufacturer
             }
           />
         </Grid>
@@ -98,27 +86,55 @@ function EquipmentForm({onSubmit}) {
             <Select
               id="department"
               name="department"
-              value={formik.values.department}
+              value={props.values.department}
               error={
-                formik.touched.department && Boolean(formik.errors.department)
+                props.touched.department && Boolean(props.errors.department)
               }
-              helperText={formik.touched.department && formik.errors.department}
-              onChange={formik.handleChange}>
+              helperText={props.touched.department && props.errors.department}
+              onChange={props.handleChange}>
               <MenuItem value={10}>Department 1</MenuItem>
               <MenuItem value={20}>Department 2</MenuItem>
               <MenuItem value={30}>Department 3</MenuItem>
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12}>
-          <Button color="primary" variant="contained" type="submit">
-            Create
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+            <Grid item xs={12}>
+              <Button color="primary" variant="contained" type="submit">
+                Create
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      )}
+    </Formik>
   );
 }
+
+function EquipmentFormContainer() {
+  const onFormSubmit = (values) => {
+    axios
+      .post('http://127.0.0.1:8000/main/equipment',values)
+      .then((resp) => {alert( ` Created Successfully!, ${resp}`)})
+      .catch((err) => {alert( `  UnSuccessfull!, ${err}`)});
+  };
+  return (
+    <Grid
+      container
+      style={{marginTop: '10%'}}
+      justify="center"
+      alignItems="center">
+      <Grid item xs={12} md={6}>
+        <Paper style={{padding: '0 20%'}}>
+          <EquipmentForm onSubmit={onFormSubmit} />
+        </Paper>
+      </Grid>
+    </Grid>
+  );
+}
+
+export default EquipmentFormContainer;
+
+
 
 //  <Formik
 //    initialValues={{
@@ -179,12 +195,12 @@ function EquipmentForm({onSubmit}) {
 //          <Select
 //            id="department"
 //            name="department"
-//            value={formik.values.department}
+//            value={props.values.department}
 //            error={
-//              formik.touched.department && Boolean(formik.errors.department)
+//              props.touched.department && Boolean(props.errors.department)
 //            }
-//            helperText={formik.touched.department && formik.errors.department}
-//            onChange={formik.handleChange}>
+//            helperText={props.touched.department && props.errors.department}
+//            onChange={props.handleChange}>
 //            <MenuItem value={10}>Department 1</MenuItem>
 //            <MenuItem value={20}>Department 2</MenuItem>
 //            <MenuItem value={30}>Department 3</MenuItem>
@@ -194,24 +210,24 @@ function EquipmentForm({onSubmit}) {
 //    </Form>
 //  </Formik>;
 
-function EquipmentFormContainer() {
-  const [formValues, setFormValues] = useState({equipmentName: ''});
-  const onFormSubmit = (values) => {
-    setFormValues(values);
-  };
-  return (
-    <Grid
-      container
-      style={{marginTop: '10%'}}
-      justify="center"
-      alignItems="center">
-      <Grid item xs={12} md={6}>
-        <Paper style={{padding: '0 20%'}}>
-          <EquipmentForm />
-        </Paper>
-      </Grid>
-    </Grid>
-  );
-}
+//function EquipmentFormContainer() {
+ // const [formValues, setFormValues] = useState({equipmentName: ''});
+ // const onFormSubmit = (values) => {
+ //   setFormValues(values);
+ // };
+ // return (
+   // <Grid
+ //     container
+  //    style={{marginTop: '10%'}}
+//      justify="center"
+//      alignItems="center">
+//      <Grid item xs={12} md={6}>
+ //       <Paper style={{padding: '0 20%'}}>
+ //         <EquipmentForm />
+//        </Paper>
+ //     </Grid>
+ //   </Grid>
+ // );
+//}
 
-export default EquipmentFormContainer;
+//export default EquipmentFormContainer;

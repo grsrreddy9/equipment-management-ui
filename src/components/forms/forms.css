@@ -1,9 +1,3 @@
-.MuiFormControl-root {
-    border: 0;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    min-width: 0;
-    flex-direction: column;
-    vertical-align: top;
-}
+.form-field {
+    width: 80%;
+   }
