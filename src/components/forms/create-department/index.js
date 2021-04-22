@@ -1,15 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import axios from 'axios';
-import {
-  Paper,
-  Grid,
-  TextField,
-  Select,
-  Button,
-  MenuItem,
-  FormControl,
-} from '@material-ui/core';
-import {Formik, Field, Form, useFormik} from 'formik';
+import {Paper, Grid, TextField, Button} from '@material-ui/core';
+import {Formik} from 'formik';
 
 function DepartmentForm({onSubmit}) {
   return (
@@ -44,9 +36,13 @@ function DepartmentForm({onSubmit}) {
 function DepartmentFormContainer() {
   const onFormSubmit = (values) => {
     axios
-      .post('http://127.0.0.1:8000/main/department',values)
-      .then((resp) => {alert( ` Created Successfully!, ${resp}`)})
-      .catch((err) => {alert( `  UnSuccessfull!, ${err}`)});
+      .post('http://127.0.0.1:8000/main/department', values)
+      .then((resp) => {
+        alert(` Created Successfully!, ${resp}`);
+      })
+      .catch((err) => {
+        alert(`  UnSuccessfull!, ${err}`);
+      });
   };
   return (
     <Grid
