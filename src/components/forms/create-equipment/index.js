@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import {Formik} from 'formik';
 
-function EquipmentForm({onSubmit, departments, manufacturers}) {
+function EquipmentForm({onSubmit, departments}) {
   return (
     <Formik
       initialValues={{
@@ -97,28 +97,23 @@ function EquipmentForm({onSubmit, departments, manufacturers}) {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl className="form-field">
-                <Select
-                  id="manufacturer"
-                  name="manufacturer"
-                  value={props.values.manufacturer}
-                  error={
-                    props.touched.manufacturer &&
-                    Boolean(props.errors.manufacturer)
-                  }
-                  helperText={
-                    props.touched.manufacturer && props.errors.manufacturer
-                  }
-                  onChange={props.handleChange}>
-                  {manufacturers.map((manufacturer) => {
-                    return (
-                      <MenuItem value={manufacturer.id}>
-                        {manufacturer.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
+            <TextField
+                id="manufacturer"
+                name="manufacturer"
+                className="form-field"
+                label="Manufacturer"
+                
+                value={props.values.manufacturer}
+                onChange={props.handleChange}
+                error={
+                  props.touched.manufacturer &&
+                  Boolean(props.errors.manufacturer)
+                }
+                helperText={
+                  props.touched.manufacturer &&
+                  props.errors.manufacturer
+                }
+              />
             </Grid>
             <Grid item xs={12}>
               <FormControl className="form-field">
@@ -157,7 +152,7 @@ function EquipmentForm({onSubmit, departments, manufacturers}) {
 
 function EquipmentFormContainer() {
   const [departments, setDepartments] = useState([]);
-  const [manufacturers, setManufacturers] = useState([]);
+  
   useEffect(() => {
     axios
       .get('http://127.0.0.1:8000/main/department')
@@ -167,14 +162,7 @@ function EquipmentFormContainer() {
       .catch((err) => {
         alert(`Error fetching departments, ${err}`);
       });
-    axios
-      .get('http://127.0.0.1:8000/main/manufacturers')
-      .then((resp) => {
-        setManufacturers(resp.data);
-      })
-      .catch((err) => {
-        alert(`Error fetching manufacturers, ${err}`);
-      });
+    
   }, []);
   const onFormSubmit = (values) => {
     axios
@@ -197,7 +185,7 @@ function EquipmentFormContainer() {
           <EquipmentForm
             onSubmit={onFormSubmit}
             departments={departments}
-            manufacturers={manufacturers}
+            
           />
         </Paper>
       </Grid>
