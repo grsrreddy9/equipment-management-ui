@@ -97,12 +97,11 @@ function EquipmentForm({onSubmit, departments}) {
               />
             </Grid>
             <Grid item xs={12}>
-            <TextField
+              <TextField
                 id="manufacturer"
                 name="manufacturer"
                 className="form-field"
                 label="Manufacturer"
-                
                 value={props.values.manufacturer}
                 onChange={props.handleChange}
                 error={
@@ -110,8 +109,7 @@ function EquipmentForm({onSubmit, departments}) {
                   Boolean(props.errors.manufacturer)
                 }
                 helperText={
-                  props.touched.manufacturer &&
-                  props.errors.manufacturer
+                  props.touched.manufacturer && props.errors.manufacturer
                 }
               />
             </Grid>
@@ -152,7 +150,7 @@ function EquipmentForm({onSubmit, departments}) {
 
 function EquipmentFormContainer() {
   const [departments, setDepartments] = useState([]);
-  
+
   useEffect(() => {
     axios
       .get('http://127.0.0.1:8000/main/department')
@@ -162,7 +160,6 @@ function EquipmentFormContainer() {
       .catch((err) => {
         alert(`Error fetching departments, ${err}`);
       });
-    
   }, []);
   const onFormSubmit = (values) => {
     axios
@@ -182,11 +179,7 @@ function EquipmentFormContainer() {
       alignItems="center">
       <Grid item xs={12} md={6}>
         <Paper style={{padding: '0 20%'}}>
-          <EquipmentForm
-            onSubmit={onFormSubmit}
-            departments={departments}
-            
-          />
+          <EquipmentForm onSubmit={onFormSubmit} departments={departments} />
         </Paper>
       </Grid>
     </Grid>

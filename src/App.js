@@ -1,13 +1,19 @@
-import './App.css';
-import {
-  CreateEquipmentPage,
-  CreateDepartmentPage,
-  CreateProductPage,
-} from './pages';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {CreateEquipmentPage, Home} from './pages';
+
 function App() {
   return (
     <div className="App">
-      <CreateEquipmentPage />
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/create-equipment">
+            <CreateEquipmentPage />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
