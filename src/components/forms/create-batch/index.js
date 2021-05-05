@@ -13,6 +13,12 @@ import {
   Typography,
   FormControlLabel,
 } from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import moment from 'moment';
+import {
+  KeyboardDateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
 import {Formik} from 'formik';
 import '../forms.css';
 
@@ -24,6 +30,7 @@ function BatchForm({onSubmit, rooms, equipments, products}) {
         equipment: [],
         product: '',
         batch_number: '',
+        start_time: '',
         isNewBatch: false,
       }}
       onSubmit={onSubmit}>
@@ -107,6 +114,34 @@ function BatchForm({onSubmit, rooms, equipments, products}) {
                   props.touched.batch_number && props.errors.batch_number
                 }
               />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl className="form-field">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDateTimePicker
+                    id="start_time"
+                    name="start_time"
+                    value={props.values.start_time}
+                    onChange={(value) => {
+                      const date = moment(Date(value)).toISOString();
+                      props.setFieldValue('start_time', date);
+                      props.setTouched({start_time: true});
+                    }}
+                    error={
+                      props.touched.start_time &&
+                      Boolean(props.errors.start_time)
+                    }
+                    helperText={
+                      props.touched.start_time && props.errors.start_time
+                    }
+                    ampm={false}
+                    label="Start time"
+                    onError={console.log}
+                    minDate={new Date()}
+                    format="yyyy-mm-dd hh:mm"
+                  />
+                </MuiPickersUtilsProvider>
+              </FormControl>
             </Grid>
             <Grid>
               <FormControl>
@@ -200,7 +235,6 @@ function BatchFormContainer() {
           <Typography variant="h5" component="h4">
             Create a batch
           </Typography>
-
           <BatchForm
             onSubmit={onFormSubmit}
             rooms={rooms}
