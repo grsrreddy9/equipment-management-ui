@@ -7,10 +7,7 @@ import {
   TableHead,
   Paper,
   TableContainer,
-  TextField,
   Button,
-  Select,
-  MenuItem,
 } from '@material-ui/core';
 import axios from 'axios';
 
@@ -33,17 +30,20 @@ const headCells = [
 const mergeProductAndCleaningDetails = (productDetails, cleaningDetails) => {
   const cleaningMap = {};
   const records = [];
-  if (productDetails.length && cleaningDetails.length) {
+  if (cleaningDetails.length) {
     cleaningDetails.forEach((cleaningDetail) => {
       if (!cleaningMap[cleaningDetail.product_details]) {
         cleaningMap[cleaningDetail.product_details] = cleaningDetail;
       }
     });
+  }
+  if (productDetails.length) {
     productDetails.forEach((product) => {
-      records.push({
-        ...product,
-        cleaning: cleaningMap[product.id],
-      });
+      const productDetail = {...product};
+      if (cleaningMap[product.id]) {
+        productDetail['cleaning'] = cleaningMap[product.id];
+      }
+      records.push(productDetail);
     });
   }
   return records;
