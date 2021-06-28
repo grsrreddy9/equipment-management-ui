@@ -8,8 +8,15 @@ import {
   Paper,
   TableContainer,
   Button,
+  FormControl,
 } from '@material-ui/core';
+import {
+  KeyboardDateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
 import axios from 'axios';
+import moment from 'moment';
+import DateFnsUtils from '@date-io/date-fns';
 
 const headCells = [
   {id: 1, label: 'Approval by QA'},
@@ -26,6 +33,8 @@ const headCells = [
   {id: 12, label: 'Room Cleaned On'},
   {id: 13, label: 'Cleaning Verified By'},
 ];
+
+const DATE_FORMAT = 'yyyy-mm-dd hh:mm';
 
 const mergeProductAndCleaningDetails = (productDetails, cleaningDetails) => {
   const cleaningMap = {};
@@ -50,6 +59,17 @@ const mergeProductAndCleaningDetails = (productDetails, cleaningDetails) => {
 };
 
 function LogBook({logbookRecords}) {
+  const updateDateTime = (data) => {
+    axios
+      .post('http://127.0.0.1:8000/main/end-batch', data)
+      .then((resp) => {
+        alert('Updated successfully!');
+      })
+      .catch((err) => {
+        alert(`Error updating end date time, ${err}`);
+      });
+  };
+
   return (
     <div className="logbook-form-container">
       <Paper>
@@ -80,7 +100,38 @@ function LogBook({logbookRecords}) {
                     <TableCell>{record.product.product_name}</TableCell>
                     <TableCell>{record.batch_number}</TableCell>
                     <TableCell>{record.start_time}</TableCell>
-                    <TableCell>{record.end_time}</TableCell>
+                    <TableCell>
+                      {record.end_time ? (
+                        record.end_time
+                      ) : (
+                        <FormControl style={{width: '90%'}}>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDateTimePicker
+                              id="end_time"
+                              name="end_time"
+                              // disabled={endDateTime ? true : false}
+                              // value={record.end_time || }
+                              onChange={(value) => {
+                                let date = moment(Date(value)).local();
+                                date = date.format(DATE_FORMAT);
+                                updateDateTime({
+                                  id: record.id,
+                                  end_time: date,
+                                });
+                              }}
+                              error={false}
+                              helperText=""
+                              ampm={false}
+                              label="End time"
+                              onError={console.log}
+                              minDate={new Date()}
+                              format={DATE_FORMAT}
+                            />
+                          </MuiPickersUtilsProvider>
+                        </FormControl>
+                        // <Button>Complete</Button>
+                      )}
+                    </TableCell>
                     <TableCell>
                       {record.cleaning && record.cleaning.clean_type.clean_type}
                     </TableCell>

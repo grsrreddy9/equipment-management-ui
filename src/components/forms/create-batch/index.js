@@ -22,6 +22,8 @@ import {
 import {Formik} from 'formik';
 import '../forms.css';
 
+const DATE_FORMAT = 'yyyy-mm-dd hh:mm';
+
 function BatchForm({onSubmit, rooms, equipments, products}) {
   return (
     <Formik
@@ -123,7 +125,8 @@ function BatchForm({onSubmit, rooms, equipments, products}) {
                     name="start_time"
                     value={props.values.start_time}
                     onChange={(value) => {
-                      const date = moment(Date(value)).toISOString();
+                      let date = moment(Date(value)).local();
+                      date = date.format(DATE_FORMAT);
                       props.setFieldValue('start_time', date);
                       props.setTouched({start_time: true});
                     }}
@@ -138,7 +141,7 @@ function BatchForm({onSubmit, rooms, equipments, products}) {
                     label="Start time"
                     onError={console.log}
                     minDate={new Date()}
-                    format="yyyy-mm-dd hh:mm"
+                    format={DATE_FORMAT}
                   />
                 </MuiPickersUtilsProvider>
               </FormControl>

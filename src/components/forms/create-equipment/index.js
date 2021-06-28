@@ -8,6 +8,7 @@ import {
   Button,
   MenuItem,
   FormControl,
+  InputLabel,
 } from '@material-ui/core';
 import {Formik} from 'formik';
 
@@ -115,6 +116,7 @@ function EquipmentForm({onSubmit, departments}) {
             </Grid>
             <Grid item xs={12}>
               <FormControl className="form-field">
+                <InputLabel id="department-label">Department</InputLabel>
                 <Select
                   id="department"
                   name="department"
@@ -153,7 +155,7 @@ function EquipmentFormContainer() {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/main/department')
+      .get('http://127.0.0.1:8000/main/departments')
       .then((resp) => {
         setDepartments(resp.data);
       })
