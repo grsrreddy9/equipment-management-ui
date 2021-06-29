@@ -59,11 +59,19 @@ const mergeProductAndCleaningDetails = (productDetails, cleaningDetails) => {
 };
 
 function LogBook({logbookRecords}) {
+  const [v, updateV] = useState('');
   const updateDateTime = (data) => {
     axios
       .post('http://127.0.0.1:8000/main/end-batch', data)
       .then((resp) => {
-        alert('Updated successfully!');
+        logbookRecords.forEach((record) => {
+          if (record.id === data.id) {
+            record.end_time = data.end_time;
+          }
+        });
+        updateV('v');
+        alert('End time updated successfully!');
+        console.log(logbookRecords);
       })
       .catch((err) => {
         alert(`Error updating end date time, ${err}`);
@@ -110,10 +118,9 @@ function LogBook({logbookRecords}) {
                               id="end_time"
                               name="end_time"
                               // disabled={endDateTime ? true : false}
-                              // value={record.end_time || }
+                              value={record.end_time}
                               onChange={(value) => {
-                                let date = moment(Date(value)).local();
-                                date = date.format(DATE_FORMAT);
+                                const date = moment(Date(value)).toISOString();
                                 updateDateTime({
                                   id: record.id,
                                   end_time: date,
@@ -123,7 +130,7 @@ function LogBook({logbookRecords}) {
                               helperText=""
                               ampm={false}
                               label="End time"
-                              onError={console.log}
+                              onError={console.log('Error')}
                               minDate={new Date()}
                               format={DATE_FORMAT}
                             />

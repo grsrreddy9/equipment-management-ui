@@ -165,7 +165,7 @@ function EquipmentFormContainer() {
   }, []);
   const onFormSubmit = (values) => {
     axios
-      .post('http://127.0.0.1:8000/main/equipment', values)
+      .post('http://127.0.0.1:8000/main/equipments', values)
       .then((resp) => {
         alert(`Created Successfully!, ${resp}`);
       })

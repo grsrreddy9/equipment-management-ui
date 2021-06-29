@@ -125,8 +125,7 @@ function BatchForm({onSubmit, rooms, equipments, products}) {
                     name="start_time"
                     value={props.values.start_time}
                     onChange={(value) => {
-                      let date = moment(Date(value)).local();
-                      date = date.format(DATE_FORMAT);
+                      const date = moment(Date(value)).toISOString();
                       props.setFieldValue('start_time', date);
                       props.setTouched({start_time: true});
                     }}
